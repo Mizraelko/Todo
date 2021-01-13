@@ -3,15 +3,18 @@ import React from 'react';
 import './todo-list.css';
 import TodoListItem from "../todo-list-item/todo-list-item";
 
-const TodoList = ({ todos }) => {
+
+
+const TodoList = ({ todos, setCurrentDone, onDeleted}) => {
 
   const elements = todos.map((item) => {
-    const { id, ...itemProps } = item;
+    const { id, ...itemProps} = item;
 
     return (
       <li key={id} className="list-group-item">
-        <TodoListItem {...itemProps } />
-      </li>
+        <TodoListItem {...itemProps } setCurrentDone={setCurrentDone} onDeleted={() => { onDeleted(id)}} />
+       </li>
+
     );
   });
 

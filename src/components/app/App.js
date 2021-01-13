@@ -11,19 +11,32 @@ function App() {
 
 
     const [state, setState] = useState( {
-        todoData:[
-            { label: 'Drink Coffee', important: false, id: 1 },
-            { label: 'Make Awesome App', important: true, id: 2 },
-            { label: 'Have a lunch', important: false, id: 3 }
-        ]})
-    const [doneTodo, setDoneTodo] = useState(0);
+        todoData:[]
+    })
+
     const [maxId, setMaxId] = useState(100)
 
+    const createTodoItem = (label) => {
+        return {
+            label,
+            important: false,
+            id : maxId,
+            done: false
 
-    const setCurrentDone = (done) => {
-        done ? setDoneTodo(doneTodo + 1) : setDoneTodo(doneTodo - 1);
+        }
+    }
+
+    const onToggleDone = (id) => {
+        setState(({ todoData}) => {
+            return {
+                ...todoData
+            }
+        })
+    }
+    const onToggleImportant = (id) => {
 
     }
+
     const onDeleted = (id) => {
         setState(({todoData}) => {
             const idx = todoData.findIndex(e => e.id === id)
@@ -37,34 +50,33 @@ function App() {
             }
         })
     }
-    const onItemAdded = (text) => {
-        setMaxId(maxId + 1)
-        const newItem = {
-            label: text,
-            important: false,
-            id : maxId
 
-        }
+
+    const onItemAdded = (text) => {
+
+        setMaxId(maxId + 1)
+        const newItem = createTodoItem(text)
+
         setState(({todoData}) => {
             return {
-                ...state,
                 todoData: [...todoData, newItem]
             }
 
         })
     }
-    console.log(state.todoData)
+
 
     return (
         <div className="todo-app">
-            <AppHeader toDo={state.todoData.length} done={doneTodo} />
+            <AppHeader toDo={state.todoData.length}  />
             <div className="top-panel d-flex">
                 <SearchPanel />
                 <ItemStatusFilter />
             </div>
 
             <TodoList todos={state.todoData}
-                      setCurrentDone={setCurrentDone}
+                      onToggleDone={onToggleDone}
+                      onToggleImportant = {onToggleImportant}
                       onDeleted={onDeleted} />
             <ItemAddForm onItemAdded={onItemAdded}/>
 

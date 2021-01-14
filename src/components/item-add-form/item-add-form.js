@@ -1,25 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './item-add-form.css';
 
 
 const ItemAddForm = ({onItemAdded}) => {
-    const itemText = (text) => {
+    const [state, setState] = useState('');
 
+    const onLabelChange = (e) => {
+        let text = e.target.value
+        setState(text)
 
+    };
+    const onSubmit = (e) => {
+        e.preventDefault();
+        onItemAdded(state);
+        setState('')
     }
 
     return (
-        <div className='add-form'>
-            <button
-                className='btn btn-info'
-                onClick={() => onItemAdded()}>
+        <form className='add-form'
+            onSubmit={onSubmit}>
+            <input type="text"
+                   className="form-control"
+                   placeholder="what need to be done?"
+                   value={state}
+                   onChange={onLabelChange}/>
+            <button className='btn btn-info'>
                 <i className="fa fa-plus-square-o"></i>
             </button>
-            <input type="text"
-                   className="form-control search-input"
-                   placeholder="new Todo"
-                   onChange={(e) => itemText(e.target.value)}/>
-        </div>
+
+
+        </form>
     );
 };
 

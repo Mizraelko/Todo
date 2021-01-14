@@ -8,7 +8,8 @@ const TodoListItem = ({
                           onToggleImportant,
                           onDeleted,
                           done,
-                          important
+                          important,
+
 
                       }) => {
 

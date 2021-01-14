@@ -5,14 +5,16 @@ import TodoListItem from "../todo-list-item/todo-list-item";
 import FlipMove from "react-flip-move";
 
 
-const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted}) => {
+const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted }) => {
+
 
     const elements = todos.map((item) => {
         const {id, ...itemProps} = item;
 
         return (
             <li key={id} className="list-group-item">
-                <TodoListItem {...itemProps} onToggleDone={() => onToggleDone(id)} onToggleImportant={()=> onToggleImportant(id)} onDeleted={() => {
+
+                <TodoListItem {...itemProps} onToggleDone={() => onToggleDone(id)} onToggleImportant={()=> onToggleImportant(id)}  onDeleted={() => {
                     onDeleted(id)
                 }}/>
             </li>
@@ -24,7 +26,7 @@ const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted}) => {
 
         <ul className="list-group todo-list">
             <FlipMove duration={700} easing='ease'>
-                {elements}
+               {elements}
             </FlipMove>
         </ul>
 

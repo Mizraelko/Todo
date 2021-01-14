@@ -2,15 +2,28 @@ import React from 'react';
 
 import './item-status-filter.css';
 
-const ItemStatusFilter = () => {
+
+
+
+const ItemStatusFilter = ({done, active, all,}) => {
+
+    let classDone = 'btn'
+    let classActive = 'btn';
+    let classAll = 'btn'
+
+    all ? classAll += ' btn-info': '';
+    done.length ? classDone += ' btn-success' : '';
+    active.length ? classActive += ' btn-danger': '';
+
+
   return (
     <div className="btn-group">
       <button type="button"
-              className="btn btn-info">All</button>
+              className={classAll}>All</button>
       <button type="button"
-              className="btn btn-outline-secondary">Active</button>
+              className={classActive}>Active</button>
       <button type="button"
-              className="btn btn-outline-secondary">Done</button>
+              className={classDone}>Done</button>
     </div>
   );
 };

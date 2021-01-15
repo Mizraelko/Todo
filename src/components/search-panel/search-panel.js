@@ -1,18 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import './search-panel.css';
 
-const SearchPanel = ({ searchItem }) => {
+const SearchPanel = ({ searchChange, value }) => {
 
-  const searchText = (e) => {
+
+
+  const onSearchChange = (e) => {
     e.preventDefault();
-    searchItem(e.target.value);
-
+    let text = e.target.value
+    searchChange(text);
   }
 
   return (
     <input type="text"
-              onChange={searchText}
+              onChange={onSearchChange}
+              value={value}
               className="form-control search-input"
               placeholder="type to search" />
   );

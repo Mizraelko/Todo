@@ -29,8 +29,9 @@ function App() {
             createTodoItem('dde2312' ),
             createTodoItem('dde333' ),
 
-        ]
-    })
+        ],
+    });
+    const [term, setTerm] = useState('')
 
     const toggleProperty = (arr, id, propertyName) => {
         const idx = arr.findIndex(e => e.id === id);
@@ -97,24 +98,44 @@ function App() {
 
     const { todoData } = state;
 
-    const countItemProperty = (arr, propName) => {
+    const searchChange = (text) => {
+        setTerm(text);
+    }
+    const search = (items, term) => {
+        if(term.length === 0) {
+            return items;
+        };
+        return items.filter((item) => {
+            return item.label
+                .toLowerCase()
+                .indexOf(term.toLowerCase()) > -1;
+        })
+    }
+
+    const visibleItems = search(todoData, term);
+    const countItemProperty = (propName, arr = todoData) => {
         return arr.filter(e => e[propName]).length;
     }
 
+    const itemCountStatusFilter= (propName, arr = todoData) => {
+        return arr.filter(e => e[propName]);
+    }
 
 
     return (
         <div className="todo-app">
-            <AppHeader toDo={todoData.length - countItemProperty(todoData, 'done')} done={countItemProperty(todoData, 'done')} important={countItemProperty(todoData, 'important')} />
+            <AppHeader toDo={todoData.length - countItemProperty('done')} done={countItemProperty('done')} important={countItemProperty('important')} />
             <div className="top-panel d-flex">
-                <SearchPanel />
-                <ItemStatusFilter done={todoData.filter(e => e.done)} active={todoData.filter(e => e.important)} all={todoData.length} />
+                <SearchPanel searchChange={searchChange} value={term}/>
+                <ItemStatusFilter done={itemCountStatusFilter('done')} active={itemCountStatusFilter('important')} all={todoData.length} />
             </div>
 
-            <TodoList todos={todoData}
+            <TodoList todos={visibleItems}
                       onToggleDone={onToggleDone}
                       onToggleImportant = {onToggleImportant}
-                      onDeleted={onDeleted}/>
+                      onDeleted={onDeleted}
+
+                      />
             <ItemAddForm onItemAdded={onItemAdded} />
 
         </div>

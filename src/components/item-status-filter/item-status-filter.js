@@ -5,7 +5,7 @@ import './item-status-filter.css';
 
 
 
-const ItemStatusFilter = ({done, active, all,}) => {
+const ItemStatusFilter = ({done, active, all}) => {
 
     let classDone = 'btn'
     let classActive = 'btn';

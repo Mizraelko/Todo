@@ -5,7 +5,8 @@ import TodoListItem from "../todo-list-item/todo-list-item";
 import FlipMove from "react-flip-move";
 
 
-const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted }) => {
+const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted}) => {
+
 
 
     const elements = todos.map((item) => {
@@ -21,6 +22,7 @@ const TodoList = ({todos, onToggleDone, onToggleImportant, onDeleted }) => {
 
         );
     });
+
 
     return (
 

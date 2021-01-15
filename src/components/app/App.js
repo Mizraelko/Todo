@@ -5,7 +5,7 @@ import ItemStatusFilter from "../item-status-filter/item-status-filter";
 import React, {useState} from "react";
 import TodoList from "../todo-list/todo-list";
 import ItemAddForm from "../item-add-form/item-add-form";
-import TodoListItem from "../todo-list-item/todo-list-item";
+
 
 
 function App() {
@@ -31,7 +31,8 @@ function App() {
 
         ],
     });
-    const [term, setTerm] = useState('')
+    const [term, setTerm] = useState('');
+    const [clickFilterItems, setClickFilterItems] = useState('')
 
     const toggleProperty = (arr, id, propertyName) => {
         const idx = arr.findIndex(e => e.id === id);
@@ -101,18 +102,37 @@ function App() {
     const searchChange = (text) => {
         setTerm(text);
     }
-    const search = (items, term) => {
-        if(term.length === 0) {
-            return items;
-        };
-        return items.filter((item) => {
-            return item.label
-                .toLowerCase()
-                .indexOf(term.toLowerCase()) > -1;
-        })
-    }
 
-    const visibleItems = search(todoData, term);
+
+    const search = (arr, term, clickFilter) => {
+        if(term.length !== 0) {
+            return arr.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+
+            } else if (clickFilter !==  false) {
+            switch (clickFilter) {
+                case 'done':
+                    return arr.filter((item) => {
+                        return item.done;
+                    })
+                case 'active':
+                    return arr.filter((item) => {
+                        return item.important;
+                    })
+                default :
+                    return arr;
+            }
+        }
+        return arr;
+
+
+
+    };
+
+
+
+    const visibleItems = search(todoData, term, clickFilterItems);
+
+
     const countItemProperty = (propName, arr = todoData) => {
         return arr.filter(e => e[propName]).length;
     }
@@ -127,15 +147,13 @@ function App() {
             <AppHeader toDo={todoData.length - countItemProperty('done')} done={countItemProperty('done')} important={countItemProperty('important')} />
             <div className="top-panel d-flex">
                 <SearchPanel searchChange={searchChange} value={term}/>
-                <ItemStatusFilter done={itemCountStatusFilter('done')} active={itemCountStatusFilter('important')} all={todoData.length} />
+                <ItemStatusFilter setClickFilterItems={setClickFilterItems} done={itemCountStatusFilter('done')} active={itemCountStatusFilter('important')} all={todoData.length} />
             </div>
 
             <TodoList todos={visibleItems}
                       onToggleDone={onToggleDone}
                       onToggleImportant = {onToggleImportant}
-                      onDeleted={onDeleted}
-
-                      />
+                      onDeleted={onDeleted} />
             <ItemAddForm onItemAdded={onItemAdded} />
 
         </div>

@@ -7,7 +7,6 @@ import TodoList from "../todo-list/todo-list";
 import ItemAddForm from "../item-add-form/item-add-form";
 
 
-
 function App() {
 
 
@@ -17,17 +16,17 @@ function App() {
             label,
             important: false,
             done: false,
-            id : Math.random(),
+            id: Math.random(),
 
 
         }
     }
 
-    const [state, setState] = useState( {
-        todoData:[
-            createTodoItem('dde' ),
-            createTodoItem('dde2312' ),
-            createTodoItem('dde333' ),
+    const [state, setState] = useState({
+        todoData: [
+            createTodoItem('dde'),
+            createTodoItem('dde2312'),
+            createTodoItem('dde333'),
 
         ],
     });
@@ -36,7 +35,7 @@ function App() {
 
     const toggleProperty = (arr, id, propertyName) => {
         const idx = arr.findIndex(e => e.id === id);
-        const oldItem =arr[idx];
+        const oldItem = arr[idx];
         const newItem = {
             ...oldItem,
             [propertyName]: !oldItem[propertyName]
@@ -52,7 +51,7 @@ function App() {
 
 
     const onToggleDone = (id) => {
-        setState(({ todoData}) => {
+        setState(({todoData}) => {
 
             return {
                 todoData: toggleProperty(todoData, id, 'done')
@@ -60,7 +59,7 @@ function App() {
         })
     }
     const onToggleImportant = (id) => {
-        setState(({ todoData}) => {
+        setState(({todoData}) => {
 
             return {
                 todoData: toggleProperty(todoData, id, 'important')
@@ -75,7 +74,7 @@ function App() {
                 ...todoData.slice(0, idx),
                 ...todoData.slice(idx + 1)
             ]
-            return  {
+            return {
                 todoData: newArray
             }
         })
@@ -95,71 +94,95 @@ function App() {
     }
 
 
-
-
-    const { todoData } = state;
+    const {todoData} = state;
 
     const searchChange = (text) => {
         setTerm(text);
     }
 
+    //
+    // const search = (arr, term, clickFilter) => {
+    //     if(term.length !== 0) {
+    //         return arr.filter((item) => item.label.toLowerCase().startsWith(term.toLowerCase()))
+    //
+    //         } else if (clickFilter !==  false) {
+    //         switch (clickFilter) {
+    //             case 'done':
+    //                 return arr.filter((item) => {
+    //                     return item.done;
+    //                 })
+    //             case 'active':
+    //                 return arr.filter((item) => {
+    //                     return item.important;
+    //                 })
+    //             default :
+    //                 return arr;
+    //         }
+    //     }
+    //     return arr;
+    //
+    //
+    //
+    // };
 
-    const search = (arr, term, clickFilter) => {
-        if(term.length !== 0) {
-            return arr.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
-
-            } else if (clickFilter !==  false) {
-            switch (clickFilter) {
-                case 'done':
-                    return arr.filter((item) => {
-                        return item.done;
-                    })
-                case 'active':
-                    return arr.filter((item) => {
-                        return item.important;
-                    })
-                default :
-                    return arr;
-            }
+    const arrSort = (arr, searchString, sortByClick) => {
+        if (sortByClick !== false) {
+            arr = (function search(filterClicks) {
+                switch (filterClicks) {
+                    case 'done':
+                        return arr.filter((item) => {
+                            return item.done;
+                        })
+                    case 'active':
+                        return arr.filter((item) => {
+                            return item.important;
+                        })
+                    default :
+                        return arr;
+                }
+            })(sortByClick);
         }
-        return arr;
+        if (searchString !== 0) {
+            return (function searchItems(arr, searchString) {
+                return arr.filter((item) => item.label.toLowerCase().startsWith(searchString.toLowerCase()))
+
+            })(arr, searchString);
+        }
+        return arr
+    }
 
 
-
-    };
-
-
-
-    const visibleItems = search(todoData, term, clickFilterItems);
+    const visibleItems = arrSort(todoData, term, clickFilterItems);
 
 
     const countItemProperty = (propName, arr = todoData) => {
         return arr.filter(e => e[propName]).length;
     }
 
-    const itemCountStatusFilter= (propName, arr = todoData) => {
+    const itemCountStatusFilter = (propName, arr = todoData) => {
         return arr.filter(e => e[propName]);
     }
 
 
     return (
         <div className="todo-app">
-            <AppHeader toDo={todoData.length - countItemProperty('done')} done={countItemProperty('done')} important={countItemProperty('important')} />
+            <AppHeader toDo={todoData.length - countItemProperty('done')} done={countItemProperty('done')}
+                       important={countItemProperty('important')}/>
             <div className="top-panel d-flex">
                 <SearchPanel searchChange={searchChange} value={term}/>
-                <ItemStatusFilter setClickFilterItems={setClickFilterItems} done={itemCountStatusFilter('done')} active={itemCountStatusFilter('important')} all={todoData.length} />
+                <ItemStatusFilter setClickFilterItems={setClickFilterItems} done={itemCountStatusFilter('done')}
+                                  active={itemCountStatusFilter('important')} all={todoData.length}/>
             </div>
 
             <TodoList todos={visibleItems}
                       onToggleDone={onToggleDone}
-                      onToggleImportant = {onToggleImportant}
-                      onDeleted={onDeleted} />
-            <ItemAddForm onItemAdded={onItemAdded} />
+                      onToggleImportant={onToggleImportant}
+                      onDeleted={onDeleted}/>
+            <ItemAddForm onItemAdded={onItemAdded}/>
 
         </div>
     );
 }
-
 
 
 export default App;

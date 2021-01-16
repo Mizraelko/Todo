@@ -100,31 +100,6 @@ function App() {
         setTerm(text);
     }
 
-    //
-    // const search = (arr, term, clickFilter) => {
-    //     if(term.length !== 0) {
-    //         return arr.filter((item) => item.label.toLowerCase().startsWith(term.toLowerCase()))
-    //
-    //         } else if (clickFilter !==  false) {
-    //         switch (clickFilter) {
-    //             case 'done':
-    //                 return arr.filter((item) => {
-    //                     return item.done;
-    //                 })
-    //             case 'active':
-    //                 return arr.filter((item) => {
-    //                     return item.important;
-    //                 })
-    //             default :
-    //                 return arr;
-    //         }
-    //     }
-    //     return arr;
-    //
-    //
-    //
-    // };
-
     const arrSort = (arr, searchString, sortByClick) => {
         if (sortByClick !== false) {
             arr = (function search(filterClicks) {
@@ -151,7 +126,7 @@ function App() {
         return arr
     }
 
-
+    console.log(state.todoData)
     const visibleItems = arrSort(todoData, term, clickFilterItems);
 
 

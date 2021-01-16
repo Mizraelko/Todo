@@ -81,7 +81,6 @@ function App() {
     }
     const onItemAdded = (text) => {
 
-
         const newItem = createTodoItem(text);
 
 
@@ -126,7 +125,7 @@ function App() {
         return arr
     }
 
-    console.log(state.todoData)
+
     const visibleItems = arrSort(todoData, term, clickFilterItems);
 
 
